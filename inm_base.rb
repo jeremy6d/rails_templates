@@ -2,18 +2,19 @@
 # from Jeremy Weiland
 
 # setup base README
-run "echo Copyright yes#{Time.now.year} INM United, all rights reserved. > README"
+run "echo ©#{Time.now.year} INM United, all rights reserved. > README"
 
 # rails:rm_tmp_dirs
 ["./tmp/pids", "./tmp/sessions", "./tmp/sockets", "./tmp/cache"].each do |f|
   run("rmdir ./#{f}")
 end
 
-# git:hold_empty_dirs
-run("find . \\( -type d -empty \\) -and \\( -not -regex ./\\.git.* \\) -exec touch {}/.gitignore \\;")
-
 # git:rails:new_app
 git :init
+
+# git:hold_empty_dirs
+run "touch tmp/.gitignore log/.gitignore vendor/.gitignore"
+run %{find . -type d -empty | grep -v "vendor" | grep -v ".git" | grep -v "tmp" | xargs -I xxx touch xxx/.gitignore}
 
 # Rspec
 
@@ -54,17 +55,12 @@ end
 
 # set up git ignores
 
-initializer '.gitignore', <<-CODE
-log/\\*.log
-log/\\*.pid
-db/\\*.db
-db/\\*.sqlite3
-db/schema.rb
-tmp/\\*\\*/\\*
+file '.gitignore', <<-CODE
 .DS_Store
-doc/api
-doc/app
+log/*.log
+tmp/**/*
 config/database.yml
+db/*.sqlite3
 CODE
 
 # templatize database setup
