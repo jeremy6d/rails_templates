@@ -1,5 +1,9 @@
-# inm_base.rb
-# from Jeremy Weiland
+# inm_base.rb - A template for new Rails apps at INM United (http://github.com/jeremy6d/inm_templates/inm_base.rb)
+# ©2009 INM United, All Rights Reserved. (http://inmunited.com)
+# written by Jeremy Weiland (http://jeremyweiland.com)
+
+# git:rails:new_app
+git :init
 
 # setup base README
 run "echo ©#{Time.now.year} INM United, all rights reserved. > README"
@@ -8,9 +12,6 @@ run "echo ©#{Time.now.year} INM United, all rights reserved. > README"
 ["./tmp/pids", "./tmp/sessions", "./tmp/sockets", "./tmp/cache"].each do |f|
   run("rmdir ./#{f}")
 end
-
-# git:rails:new_app
-git :init
 
 # git:hold_empty_dirs
 run "touch tmp/.gitignore log/.gitignore vendor/.gitignore"
@@ -35,11 +36,6 @@ gem 'mislav-will_paginate', :version => '~> 2.2.3',
                             :source => 'http://gems.github.com'
 gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com'
 
-# restful_authentication
-
-plugin 'restful_authentication', :git => 'git://github.com/technoweenie/restful-authentication.git', 
-                                 :submodule => true
-
 # resource_controller
 
 plugin 'resource_controller', :git => "git://github.com/giraffesoft/resource_controller.git", :submodule => true  
@@ -50,6 +46,8 @@ rake('gems:install', :sudo => true)
 # generate users / sessions?
 
 if yes?("Generate users / sessions?")
+  plugin 'restful_authentication', :git => 'git://github.com/technoweenie/restful-authentication.git', 
+                                   :submodule => true
   generate("authenticated", "user session --include activation --stateful --rspec")                              
 end
 
