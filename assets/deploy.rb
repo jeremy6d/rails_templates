@@ -200,4 +200,4 @@ def template_file(template,remote_file_to_put)
     buffer= ERB.new(template).result(binding)   # parse it
     put buffer,remote_file_to_put               # put the result
 
-end
+endG
