@@ -3,9 +3,8 @@
 run "capify ."    
 
 inside('config') do
-  app_name = Dir.pwd.split('/').last
-  file 'deploy.rb', File.read('http://github.com/inmunited/rails_templates/raw/master/assets/deploy.rb')
-            
+  run 'curl -L http://github.com/inmunited/rails_templates/raw/master/assets/deploy.rb > deploy.rb'
+  app_name = Dir.pwd.split('/').last              
   file 'deploy.yml', <<-DEPLOY_YML
     application:    "#{app_name}"
     repository:     "git@github.com:inmunited/#{app_name}.git"
