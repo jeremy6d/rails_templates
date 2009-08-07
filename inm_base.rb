@@ -1,5 +1,7 @@
 # TODO: integrate deploy.rb and generation of deploy.yml
 # TODO: capify out of box
+# TODO: move deploy.yml to assets and evaluate with ERB
+# TODO: better divination of app name
 
 # inm_base.rb - A template for new Rails apps at INM United (http://github.com/jeremy6d/inm_templates/inm_base.rb)
 # ©2009 INM United, All Rights Reserved. (http://inmunited.com)
