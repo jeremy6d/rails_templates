@@ -1,3 +1,6 @@
+# TODO: integrate deploy.rb and generation of deploy.yml
+# TODO: capify out of box
+
 # inm_base.rb - A template for new Rails apps at INM United (http://github.com/jeremy6d/inm_templates/inm_base.rb)
 # ©2009 INM United, All Rights Reserved. (http://inmunited.com)
 # written by Jeremy Weiland (http://jeremyweiland.com)
@@ -17,6 +20,21 @@ end
 run "touch tmp/.gitignore log/.gitignore vendor/.gitignore"
 run %{find . -type d -empty | grep -v "vendor" | grep -v ".git" | grep -v "tmp" | xargs -I xxx touch xxx/.gitignore}
 
+# gem setup
+
+gem 'mislav-will_paginate', :version => '~> 2.2.3', 
+                            :lib => 'will_paginate', 
+                            :source => 'http://gems.github.com'
+gem 'rubyist-aasm', :lib => 'aasm', 
+                    :source => 'http://gems.github.com'
+gem 'capistrano-capistrano', :version => '~>2',
+                             :lib => 'capistrano', 
+                             :source => 'http://gems.github.com'
+
+# capify, bitch!
+
+load_template "http://github.com/inmunited/rails_templates/raw/master/capistrano.rb"
+
 # Rspec
 
 plugin "rspec", :git => "git://github.com/dchelimsky/rspec.git", :submodule => true
@@ -28,13 +46,6 @@ generate :rspec
 run "curl -L http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js > public/javascripts/jquery.js"
 run "curl -L http://jqueryui.com/download/jquery-ui-1.7.1.custom.zip > public/javascripts/jquery-ui.js"
 plugin 'jrails', :git => 'git://github.com/jauderho/jrails.git', :submodule => true
-
-# gem setup
-
-gem 'mislav-will_paginate', :version => '~> 2.2.3', 
-                            :lib => 'will_paginate', 
-                            :source => 'http://gems.github.com'
-gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com'
 
 # resource_controller
 
@@ -74,3 +85,5 @@ git :submodule => "init"
 git :add => "."
 
 git :commit => "-a -m 'Setting up a new rails app. Copy config/database.yml.sample to config/database.yml and customize.'"
+
+puts "Done. INM fa life!"
