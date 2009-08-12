@@ -1,3 +1,5 @@
-These are templates for use by INM United development.
+These are templates for use by INM United development. You can use the inm_base.rb template directly from this repository using the following url:
+
+rails <new project name> -m http://tr.im/inmrails
 
 ©2009 INM United, All Rights Reserved.
