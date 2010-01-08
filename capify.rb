@@ -37,5 +37,3 @@ file 'config/deploy.rb', %q{
     end
   end
 }
-
-gem 'palmtree'

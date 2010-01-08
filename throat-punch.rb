@@ -1,2 +1,2 @@
-gem "reagent-throat-punch", :lib => 'throat-punch', 
+gem "throat-punch", :lib => 'reagent-throat-punch', 
                             :source => 'http://gems.github.com'
