@@ -1,6 +1,6 @@
 # TODO: add asset packager, hoptoad, google analytics, etc.
 
-%w{base clearance gems jquery}.each do |script|
+%w{base clearance gems throat-punch jquery}.each do |script|
   load_template "/Users/jeremyweiland/Development/my_templates/#{script}.rb"
 end
 
