@@ -32,5 +32,4 @@ CODE
 # templatize database setup
 
 run "cp config/database.yml config/database.yml.sample"
-git :add => "."
-git :commit => "-a -m 'Initial commit.'"
+git :add => ".", :commit => "-a -m 'Initial commit.'"
