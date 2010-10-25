@@ -8,6 +8,6 @@ File.open 'config/environments/test.rb', 'a' do |file|
     config.gem "rspec", :lib => false, :version => ">= 1.2.0"
     config.gem "rspec-rails", :lib => false, :version => ">= 1.2.0"
   CONFIG_FILE
-end
+ende
 
 generate :rspec
