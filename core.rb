@@ -44,6 +44,11 @@ group :test do
   gem 'pickle'
   gem 'pickle-mongoid'
   gem 'launchy'
+  gem 'factory_girl_rails'
+end
+
+group :development do
+  gem 'rails3-generators'
 end
 
 group :test, :development do
@@ -62,9 +67,8 @@ application do %q{
   config.generators do |g|
     g.orm                 :mongoid
     g.template_engine     :haml
-    g.test_framework      :micronaut, :fixture => true, 
-                                      :views => false
-    g.fixture_replacement :factory_girl, :dir => "test/factories"
+    g.test_framework      :rspec
+    g.fixture_replacement :factory_girl, :dir => "spec/factories"
   end 
 }
 end
@@ -103,17 +107,24 @@ ActiveSupport.on_load(:action_view) do
 end
 CODE
 
-spec_helper_path = 'spec/spec_helper.rb'
-gsub_file spec_helper_path, 'config.fixture_path = "#{::Rails.root}/spec/fixtures"', ''
-gsub_file spec_helper_path, /(config.use_transactional_fixtures = true)/, ''
-gsub_file spec_helper_path, "config.mock_with :rspec", "config.mock_with :mocha"
-mongoid_rspec_truncation = <<-MONGOID
+remove_file 'spec/spec_helper.rb'
+create_file 'spec/spec_helper.rb', <<-SPEC_HELPER
+ENV["RAILS_ENV"] ||= 'test'
+require File.expand_path("../../config/environment", __FILE__)
+require 'rspec/rails'
+
+# Requires supporting ruby files with custom matchers and macros, etc,
+# in spec/support/ and its subdirectories.
+Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+
+RSpec.configure do |config|
+  config.mock_with :mocha
+  
   config.before :each do
     Mongoid.master.collections.select {|c| c.name !~ /system/ }.each(&:drop)
   end
-MONGOID
-    
-inject_into_file spec_helper_path, mongoid_rspec_truncation, :after => "# config.use_transactional_fixtures = true\n"
+end
+SPEC_HELPER
 
 wipe_cuke_db = <<-CUKE
   Before do
@@ -122,6 +133,8 @@ wipe_cuke_db = <<-CUKE
 CUKE
 
 inject_into_file "features/support/env.rb", wipe_cuke_db, :after => "ActionController::Base.allow_rescue = false"
+
+empty_directory "spec/factories"
 
 git :add => "."
 git :commit => "-m 'Initial commit.'"
